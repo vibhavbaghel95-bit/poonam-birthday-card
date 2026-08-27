@@ -396,6 +396,168 @@
       right: -25px;
     }
 
+    /* Cute Bear Animation */
+    .bear-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 30px auto;
+      display: none;
+      animation: bearBounce 0.8s ease-out forwards;
+    }
+
+    .bear-container.show {
+      display: block;
+    }
+
+    @keyframes bearBounce {
+      0% {
+        opacity: 0;
+        transform: scale(0) translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .bear-body {
+      position: relative;
+      width: 120px;
+      height: 140px;
+      background: #8B4513;
+      border-radius: 50%;
+      margin: 0 auto;
+      animation: bearWave 1s ease-in-out infinite;
+    }
+
+    @keyframes bearWave {
+      0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+      50% { transform: translateY(-10px) rotateZ(2deg); }
+    }
+
+    .bear-head {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: #8B4513;
+      border-radius: 50%;
+      top: -50px;
+      left: 10px;
+      animation: headNod 1.5s ease-in-out infinite;
+    }
+
+    @keyframes headNod {
+      0%, 100% { transform: rotateZ(0deg); }
+      25% { transform: rotateZ(5deg); }
+      75% { transform: rotateZ(-5deg); }
+    }
+
+    .bear-eyes {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #000;
+      border-radius: 50%;
+      top: 30px;
+    }
+
+    .bear-eye-left {
+      left: 20px;
+      animation: eyeBlink 3s ease-in-out infinite;
+    }
+
+    .bear-eye-right {
+      right: 20px;
+      animation: eyeBlink 3s ease-in-out infinite 0.1s;
+    }
+
+    @keyframes eyeBlink {
+      0%, 10%, 90%, 100% { transform: scaleY(1); }
+      5% { transform: scaleY(0.1); }
+    }
+
+    .bear-nose {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #000;
+      border-radius: 50%;
+      top: 55px;
+      left: 45px;
+    }
+
+    .bear-smile {
+      position: absolute;
+      width: 20px;
+      height: 10px;
+      border: 2px solid #000;
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      top: 65px;
+      left: 40px;
+    }
+
+    .bear-ear {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: #8B4513;
+      border-radius: 50%;
+      top: -20px;
+    }
+
+    .bear-ear-left {
+      left: 5px;
+    }
+
+    .bear-ear-right {
+      right: 5px;
+    }
+
+    .bear-arm {
+      position: absolute;
+      width: 30px;
+      height: 60px;
+      background: #8B4513;
+      border-radius: 15px;
+      top: 30px;
+    }
+
+    .bear-arm-left {
+      left: -20px;
+      animation: armWave 1.2s ease-in-out infinite;
+    }
+
+    .bear-arm-right {
+      right: -20px;
+      animation: armWave 1.2s ease-in-out infinite 0.1s;
+    }
+
+    @keyframes armWave {
+      0%, 100% { transform: rotateZ(-30deg); }
+      50% { transform: rotateZ(30deg); }
+    }
+
+    .bear-flowers {
+      position: absolute;
+      bottom: -10px;
+      left: 45px;
+      font-size: 40px;
+      animation: flowersAppear 0.8s ease-out forwards;
+    }
+
+    @keyframes flowersAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotateZ(0deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotateZ(10deg);
+      }
+    }
+
     .gift-message {
       margin-top: 30px;
       font-family: 'Dancing Script', cursive;
@@ -630,6 +792,23 @@
         </div>
       </div>
 
+      <!-- Cute Bear with Flowers -->
+      <div class="bear-container" id="bearContainer">
+        <div class="bear-body">
+          <div class="bear-head">
+            <div class="bear-eyes bear-eye-left"></div>
+            <div class="bear-eyes bear-eye-right"></div>
+            <div class="bear-nose"></div>
+            <div class="bear-smile"></div>
+            <div class="bear-ear bear-ear-left"></div>
+            <div class="bear-ear bear-ear-right"></div>
+          </div>
+          <div class="bear-arm bear-arm-left"></div>
+          <div class="bear-arm bear-arm-right"></div>
+          <div class="bear-flowers">🌹</div>
+        </div>
+      </div>
+
       <div id="giftContent" style="display: none;">
         <div class="gift-message">You deserve all the happiness! 💖</div>
         <p style="margin-top: 20px;">Thank you for being such a wonderful person. Keep shining and spreading your light!</p>
@@ -700,17 +879,22 @@
       }
     });
 
-    // --- Gift Box Opening ---
+    // --- Gift Box Opening with Cute Bear ---
     let giftOpened = false;
     function openGiftBox() {
       if (giftOpened) return;
       giftOpened = true;
       document.getElementById('giftBox').classList.add('opened');
       document.getElementById('giftInstruction').style.display = 'none';
+      
+      // Show cute bear with flowers
+      const bearContainer = document.getElementById('bearContainer');
+      bearContainer.classList.add('show');
+      
       setTimeout(() => {
         document.getElementById('giftContent').style.display = 'block';
         triggerPartyBomber();
-      }, 600);
+      }, 800);
     }
 
     // --- Navigation System ---
@@ -754,6 +938,7 @@
         document.getElementById('giftBox').classList.remove('opened');
         document.getElementById('giftInstruction').style.display = 'block';
         document.getElementById('giftContent').style.display = 'none';
+        document.getElementById('bearContainer').classList.remove('show');
       }
     }
 

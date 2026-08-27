@@ -75,6 +75,72 @@
       font-size: 12px;
       cursor: pointer;
       backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 94, 151, 0.5);
+    }
+
+    .music-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .music-modal.active {
+      display: flex;
+    }
+
+    .music-player-box {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(16px);
+      border-radius: 28px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .music-player-box h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 28px;
+      color: #ffe6ee;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    }
+
+    .music-player-box iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .close-music-btn {
+      background: rgba(255, 94, 151, 0.2);
+      color: #ff5e97;
+      border: 1px solid rgba(255, 94, 151, 0.5);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .close-music-btn:hover {
+      background: rgba(255, 94, 151, 0.3);
     }
 
     .app-container {
@@ -300,7 +366,16 @@
 
   <div class="top-bar">
     <div class="progress-dots" id="dotsContainer"></div>
-    <button class="music-btn" onclick="alert('Add your favourite audio here!')">🎵 Music</button>
+    <button class="music-btn" onclick="openMusicPlayer()">🎵 Music</button>
+  </div>
+
+  <!-- Music Modal -->
+  <div class="music-modal" id="musicModal">
+    <div class="music-player-box">
+      <h2>🎵 Enjoy the Music! 🎵</h2>
+      <iframe width="100%" height="315" src="https://www.youtube.com/embed/Fkt9wkqLK2g" title="Birthday Song" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <button class="close-music-btn" onclick="closeMusicPlayer()">Close ✕</button>
+    </div>
   </div>
 
   <div class="app-container">
@@ -469,6 +544,22 @@
       requestAnimationFrame(animateBg);
     }
     animateBg();
+
+    // --- Music Player Functions ---
+    function openMusicPlayer() {
+      document.getElementById('musicModal').classList.add('active');
+    }
+
+    function closeMusicPlayer() {
+      document.getElementById('musicModal').classList.remove('active');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('musicModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeMusicPlayer();
+      }
+    });
 
     // --- Navigation System ---
     const totalScreens = 7;

@@ -298,6 +298,123 @@
       50% { transform: translateY(-8px); }
     }
 
+    /* Gift Box Styles */
+    .gift-box-container {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 20px auto;
+      perspective: 1000px;
+    }
+
+    .gift-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease-out;
+    }
+
+    .gift-box.opened {
+      transform: rotateX(-90deg) rotateZ(10deg);
+    }
+
+    .gift-box-top {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ff6b9d, #e03268);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(255, 94, 151, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      transform-origin: bottom center;
+      transition: transform 0.6s ease;
+    }
+
+    .gift-box-bottom {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffa07a, #ff6347);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(255, 107, 157, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      transform: rotateX(90deg);
+      transform-origin: bottom center;
+    }
+
+    .gift-ribbon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+      height: 12px;
+      background: #ffd700;
+      border-radius: 6px;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .gift-bow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background: #ffd700;
+      border-radius: 50%;
+      z-index: 11;
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .gift-bow::before,
+    .gift-bow::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ffd700;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .gift-bow::before {
+      left: -25px;
+    }
+
+    .gift-bow::after {
+      right: -25px;
+    }
+
+    .gift-message {
+      margin-top: 30px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      color: #ff9ebb;
+    }
+
+    .gift-instruction {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 15px;
+      animation: pulse-text 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-text {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
     /* Party Bomber Items */
     .party-item {
       position: fixed;
@@ -495,13 +612,35 @@
       <button class="btn-primary" onclick="nextScreen()">One More 💐</button>
     </div>
 
-    <!-- Screen 6: Celebration -->
+    <!-- Screen 6: Surprise Gift Box -->
     <div class="screen" id="screen-6">
-      <h1 style="font-size: 48px; margin-bottom: 20px;">You're so loved Poonam</h1>
-      <p>...more than all the hearts on this page.</p>
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button class="btn-primary" onclick="triggerPartyBomber()">Make it rain 🎉</button>
-        <button class="btn-primary" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);" onclick="goToScreen(0)">Replay 🔄</button>
+      <div class="tag">Final Surprise! 🎁</div>
+      <h1 style="margin-bottom: 20px;">A Gift For You</h1>
+      
+      <div class="gift-box-container">
+        <div class="gift-box" id="giftBox" onclick="openGiftBox()">
+          <div class="gift-box-top">
+            🎁
+            <div class="gift-ribbon"></div>
+            <div class="gift-bow"></div>
+          </div>
+          <div class="gift-box-bottom">
+            💝
+          </div>
+        </div>
+      </div>
+
+      <div id="giftContent" style="display: none;">
+        <div class="gift-message">You deserve all the happiness! 💖</div>
+        <p style="margin-top: 20px;">Thank you for being such a wonderful person. Keep shining and spreading your light!</p>
+        <div style="display: flex; gap: 10px; margin-top: 25px; justify-content: center;">
+          <button class="btn-primary" onclick="triggerPartyBomber()">Celebrate! 🎉</button>
+          <button class="btn-primary" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);" onclick="goToScreen(0)">Start Over 🔄</button>
+        </div>
+      </div>
+
+      <div class="gift-instruction" id="giftInstruction">
+        Tap the gift box to open it! 🎀
       </div>
     </div>
 
@@ -561,6 +700,19 @@
       }
     });
 
+    // --- Gift Box Opening ---
+    let giftOpened = false;
+    function openGiftBox() {
+      if (giftOpened) return;
+      giftOpened = true;
+      document.getElementById('giftBox').classList.add('opened');
+      document.getElementById('giftInstruction').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('giftContent').style.display = 'block';
+        triggerPartyBomber();
+      }, 600);
+    }
+
     // --- Navigation System ---
     const totalScreens = 7;
     let currentScreen = 0;
@@ -594,6 +746,14 @@
         document.getElementById('letterView').style.display = 'none';
         document.getElementById('letterView').style.opacity = '0';
         document.getElementById('letterView').style.transform = 'translateY(20px)';
+      }
+
+      // Reset Gift Box when visiting Screen 6
+      if (index === 6) {
+        giftOpened = false;
+        document.getElementById('giftBox').classList.remove('opened');
+        document.getElementById('giftInstruction').style.display = 'block';
+        document.getElementById('giftContent').style.display = 'none';
       }
     }
 
